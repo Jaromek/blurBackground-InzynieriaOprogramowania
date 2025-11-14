@@ -19,6 +19,13 @@ class Camera:
 
 if __name__ == "__main__":
     cam = Camera()
+    
+
+    # camera resolution: 640x480
+    height = int(cam.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    width = int(cam.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    print(f"Camera resolution: {width}x{height}")
+
     try:
         while True:
             frame = cam.get_frame()
@@ -29,3 +36,5 @@ if __name__ == "__main__":
     finally:
         cam.release()
         cv2.destroyAllWindows()
+
+
