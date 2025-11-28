@@ -1,4 +1,3 @@
 Dataset/*
 !Dataset/datasetInfo.txt
 !Dataset/datasetExamination.ipynb
-Model/UNetModel.pth
