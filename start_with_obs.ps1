@@ -66,6 +66,38 @@ try {
     exit 1
 }
 
+# Instalacja zaleznosci Python
+Write-Host ""
+Write-Host "Sprawdzanie zaleznosci Python..." -ForegroundColor Yellow
+try {
+    Write-Host "Instalowanie/Aktualizowanie bibliotek python (requirements.txt)..." -ForegroundColor Gray
+    # Uzywamy py -3.11 do instalacji zeby miec pewnosc ze to ten sam python
+    py -3.11 -m pip install -r backend/requirements.txt | Out-Null
+    Write-Host "Zaleznosci Python zainstalowane." -ForegroundColor Green
+} catch {
+    Write-Host "Blad podczas instalacji zaleznosci Python!" -ForegroundColor Red
+    Write-Host $_ -ForegroundColor Red
+    exit 1
+}
+
+# Instalacja zaleznosci Frontend (npm install) jesli brak node_modules
+if (-not (Test-Path "$projectRoot\blr\node_modules")) {
+    Write-Host ""
+    Write-Host "Nie znaleziono node_modules. Instalowanie zaleznosci frontendowych..." -ForegroundColor Yellow
+    Push-Location "$projectRoot\blr"
+    try {
+        npm install
+        Write-Host "Zaleznosci frontendowe zainstalowane." -ForegroundColor Green
+    } catch {
+        Write-Host "Blad podczas 'npm install'!" -ForegroundColor Red
+        exit 1
+    } finally {
+        Pop-Location
+    }
+} else {
+    Write-Host "Zaleznosci frontendowe (node_modules) juz istnieja." -ForegroundColor Gray
+}
+
 # Sprawdz pyvirtualcam (dla OBS)
 Write-Host ""
 Write-Host "Sprawdzanie obslugi OBS..." -ForegroundColor Yellow

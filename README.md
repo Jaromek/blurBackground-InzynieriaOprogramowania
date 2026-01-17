@@ -53,42 +53,52 @@ A visual navigation component designed for high-impact imagery.
 
 ## SETUP
 
+### Requirements
+- **Python 3.11** (Strictly required)
+- **Node.js** (Latest LTS recommended)
+
+### Quick Start (Recommended)
 1.  Clone the repository:
     ```bash
-    git clone [https://github.com/yourusername/blur-frontend.git](https://github.com/yourusername/blur-frontend.git)
+    git clone https://github.com/Jaromek/blurBackground-InzynieriaOprogramowania.git
+    ```
+2.  Run the easy start script:
+    - **Windows**: Double-click `run.bat` or run:
+      ```powershell
+      .\run.bat
+      ```
+
+This script will automatically:
+- Check for Python 3.11 and Node.js.
+- Install necessary Python dependencies (including `pyvirtualcam`).
+- Install frontend dependencies (`npm install`).
+- Launch both Backend and Frontend servers.
+
+### Manual Setup
+If you prefer to run things manually:
+
+1.  **Backend**:
+    ```bash
+    cd backend
+    py -3.11 -m pip install -r requirements.txt
+    py -3.11 server.py
     ```
 
-2.  Install dependencies:
+2.  **Frontend**:
     ```bash
+    cd blr
     npm install
-    ```
-
-3.  Start the development server:
-    ```bash
     npm start
     ```
-
-*Note: This frontend requires the accompanying Python backend server running on `localhost:5000` to fully function. Without the backend, video feed components will remain in a placeholder state.*
-
-<img width="1728" height="953" alt="image" src="https://github.com/user-attachments/assets/363ad171-b4e2-4a69-841b-c5a4b8266067" />
-<img width="1728" height="948" alt="image" src="https://github.com/user-attachments/assets/f7412238-904b-43a6-b0dd-9d8400cb3b55" />
-<img width="855" height="839" alt="image" src="https://github.com/user-attachments/assets/5eed68c9-916b-40e7-bf39-7d880cd0f684" />
-
-
 
 ## PROJECT STRUCTURE
 
 ```text
-src/
-├── components/
-│   ├── LiquidEther.js       # Core WebGL fluid simulation engine
-│   ├── FlowingMenu.js       # Infinite marquee navigation
-│   ├── PixelTransition.js   # GSAP-based visual transition
-│   └── BlurText.js          # Intersection-observer based text reveals
-├── sections/
-│   ├── Section1.js          # Hero section with fluid background
-│   ├── Section2.js          # Feature showcase with scroll transforms
-│   ├── Section3.js          # Flowing menu component integration
-│   └── Section4.js          # Kinetic footer and video modal
-├── App.js                   # Main layout engine and state controller
-└── CameraInterface.js       # Operational computer vision control layer
+root/
+├── backend/             # Python Flask Server (Logic & Processing)
+├── blr/                 # React Frontend (UI & Compositor)
+├── Camera/              # Camera handling logic
+├── run.bat              # One-click startup script
+├── start_with_obs.ps1   # PowerShell startup logic
+└── README.md            # Documentation
+```
