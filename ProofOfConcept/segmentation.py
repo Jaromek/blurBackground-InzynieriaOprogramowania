@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from Camera import Camera
+from camera import Camera
 
 
 class ImageHumanSegmentationCV2:

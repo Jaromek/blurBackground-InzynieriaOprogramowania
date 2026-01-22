@@ -1,5 +1,6 @@
 import pyvirtualcam
 from blurredCamera import BlurBackground, cv2
+from ultralytics import YOLO
 
 
 class VirtualCamera:
@@ -10,11 +11,15 @@ class VirtualCamera:
         self.cam = pyvirtualcam.Camera(
             width=self.width, height=self.height, fps=self.fps
         )
+        self.model = YOLO("yolov8n-seg.pt")
         print(f"Virtual camera initialized at {self.width}x{self.height}@{self.fps}fps")
 
     def send_frame(self, frame):
-        processed = BlurBackground.segmentation_blur()
-        self.cam.send(processed)
+        # Przetwórz klatkę która została przekazana (z wybranej kamery)
+        processed = BlurBackground.blur_background(frame, self.model)
+        # Konwertuj BGR na RGB dla pyvirtualcam
+        processed_rgb = cv2.cvtColor(processed, cv2.COLOR_BGR2RGB)
+        self.cam.send(processed_rgb)
         self.cam.sleep_until_next_frame()
 
     def close(self):
@@ -23,11 +28,23 @@ class VirtualCamera:
 
 
 if __name__ == "__main__":
+    # Zmień numer kamery tutaj (0 = domyślna, 1 = druga kamera, itd.)
+    CAMERA_INDEX = 0 
+    
     vc = VirtualCamera()
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(CAMERA_INDEX)
 
     if not cap.isOpened():
-        print("Nie udało się otworzyć kamery.")
+        print(f"Nie udało się otworzyć kamery {CAMERA_INDEX}.")
+        print("Dostępne kamery - sprawdzam...")
+        # Sprawdź dostępne kamery
+        for i in range(5):
+            test_cap = cv2.VideoCapture(i)
+            if test_cap.isOpened():
+                print(f"  Kamera {i}: Dostępna")
+                test_cap.release()
+            else:
+                print(f"  Kamera {i}: Niedostępna")
         exit()
 
     try:
